@@ -19,7 +19,7 @@ from utils.confpred import compute_quantile, generate_sets, efficiency, coverage
 
 def main(args):
     print("data preparation")
-    run = wandb.init(project="cp-bird", config=args, mode="online")
+    run = wandb.init(project="conformal-prediction", config=args, mode="disabled")
 
     if args.ds == "mnist":
         device = 'cpu'
@@ -143,7 +143,7 @@ def main(args):
         lr = 1e-1
         wd = 1e-10
         model = Linear(n_in, n_out)
-        optimizer = optim.SGD(model.parameters(), lr=lr, weight_decay=wd)
+        optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=wd)
 
     elif args.ds == "msr":
         device = 'cpu'
@@ -168,7 +168,7 @@ def main(args):
         n_in = train_x.shape[1]
         n_out = train_y_amb.shape[1]
         
-        lr = 1e-2
+        lr = 1e-1
         wd = 1e-6
         model = Linear(n_in, n_out)
         optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=wd)
@@ -186,8 +186,6 @@ def main(args):
         sigma = torch.std(train_x, dim=0)
         train_x = (train_x - mu) / sigma 
         test_x = (test_x - mu) / sigma 
-        # train_x = F.normalize(train_x)
-        # test_x = F.normalize(test_x)
         train_x, cal_x, train_y_amb, cal_y_amb, train_y, cal_y = train_test_split(train_x, train_y_amb, train_y, test_size=args.n)
         
         
@@ -220,8 +218,6 @@ def main(args):
         sigma = torch.std(train_x, dim=0)
         train_x = (train_x - mu) / sigma 
         test_x = (test_x - mu) / sigma 
-        # train_x = F.normalize(train_x)
-        # test_x = F.normalize(test_x)
         train_x, cal_x, train_y_amb, cal_y_amb, train_y, cal_y = train_test_split(train_x, train_y_amb, train_y, test_size=args.n)
         
         train_dataset = TensorDataset(train_x,train_y_amb, train_y)
@@ -235,7 +231,7 @@ def main(args):
         n_out = train_y_amb.shape[1]
         
         lr = 1e-2
-        wd = 1e-10
+        wd = 1e-2
         model = Linear(n_in, n_out)
         optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=wd)
 
@@ -263,13 +259,16 @@ def main(args):
         n_out = train_y_amb.shape[1]
         
         lr = 1e-2
-        wd = 1e-10
+        wd = 1e-6
         model = Linear(n_in, n_out)
         optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=wd)
 
 
     wandb.log({"num_labels_all" : mean_targets(train_y_amb, "all")})
     wandb.log({"num_labels_amb" : mean_targets(train_y_amb, "amb")})
+    wandb.log({"cal_num_labels_all" : mean_targets(cal_y_amb, "all")})
+    wandb.log({"cal_num_labels_amb" : mean_targets(cal_y_amb, "amb")})
+
 
     scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.e)
     model = model.to(device)        
@@ -290,8 +289,6 @@ def main(args):
         model.eval()
         train_acc = accuracy(model, train_loader)
         print(train_acc)
-        test_acc = accuracy(model, test_loader)
-        print(test_acc)
         wandb.log({"train_accuracy" : train_acc})
    
     test_acc = accuracy(model, test_loader)
