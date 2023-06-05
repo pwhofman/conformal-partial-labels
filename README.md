@@ -10,11 +10,12 @@ python3 main.py -ds mnist -e 100 -noise random -p 1.0 -q 0.1
 ## Citation
 If you use this code, please cite the paper
 ```
-@inproceedings{javanmardi2023conformal,
-  title={Conformal Prediction with Partially Labeled Data},
-  author={Javanmardi, Alireza and Sale, Yusuf and Hofman, Paul and H\"{u}llermeier, Eyke},
-  booktitle={Proceedings of the Twelfth Symposium on Conformal and Probabilistic Prediction with Applications},
-  year={2023},
-  organization={PMLR}
+@misc{javanmardi2023conformal,
+      title={Conformal Prediction with Partially Labeled Data}, 
+      author={Alireza Javanmardi and Yusuf Sale and Paul Hofman and Eyke Hüllermeier},
+      year={2023},
+      eprint={2306.01191},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
 }
 ```
