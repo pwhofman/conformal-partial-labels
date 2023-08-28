@@ -1,5 +1,5 @@
 # Conformal Prediction with Partially Labeled Data
-This repo has the code for the paper: [Conformal Prediction with Partially Labeled Data](https://proceedings.mlr.press/v204/javanmardi23a.html) by Alireza Javanmardi, Yusuf Sale, Paul Hofman, and Eyke Hüllermeier. This paper will appears in the 12th Symposium on Conformal and Probabilistic Prediction with Applications (COPA 2023).
+This repo has the code for the paper: [Conformal Prediction with Partially Labeled Data](https://proceedings.mlr.press/v204/javanmardi23a.html) by Alireza Javanmardi, Yusuf Sale, Paul Hofman, and Eyke Hüllermeier. This paper appears in the 12th Symposium on Conformal and Probabilistic Prediction with Applications (COPA 2023).
 
 ## Setup
 The file `requirements.txt` has all the required pip packages. The code can be run using the `main.py` file. An example can be found below
